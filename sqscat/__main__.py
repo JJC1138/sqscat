@@ -31,6 +31,12 @@ def main():
                     sys.exit(NO_MESSAGE_EXIT_CODE)
             break
         message = messages[0]
-        sys.stdout.write(message.body)
-        sys.stdout.close()
-        message.delete()
+        try:
+            sys.stdout.write(message.body)
+            sys.stdout.close()
+        except IOError:
+            # The pipe was broken so we've failed to process the message and we should make it immediately visible again:
+            message.change_visibility(VisibilityTimeout=0)
+            raise
+        else:
+            message.delete()
