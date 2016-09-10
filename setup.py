@@ -7,4 +7,5 @@ setuptools.setup(
     entry_points = {'console_scripts': [
         'sqscat = sqscat.__main__:main',
     ]},
+    install_requires = ['boto3'],
 )
